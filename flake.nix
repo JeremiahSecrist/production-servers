@@ -44,7 +44,7 @@
           self.nixosModules.nextcloud;
       };
       nixosModules = {
-        nextcloud = ./hosts/nextcloud;
+        nextcloud = ./hosts/authentik
       };
       checks.${defaultSystem}.default = nixos-lib.runTest (import ./tests/main.nix {inherit self inputs pkgs;});
       packages.x86_64-linux = {
@@ -53,10 +53,14 @@
           modules = [
             # you can include your own nixos configuration here, i.e.
             agenix.nixosModules.default
-            self.nixosModules.nextcloud
+            self.nixosModules.authentik
           ];
           format = "linode";
         };
+      };
+      apps.x86_64-linux.agenix = {
+        type = "app";
+        program = "${agenix.packages.x86_64-linux.agenix}/bin/agenix -i ./secrets/identities/sky $@";
       };
     };
 }
