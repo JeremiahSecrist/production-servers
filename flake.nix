@@ -9,13 +9,17 @@
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    authentik-nix = {
+      url = "github:nix-community/authentik-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = inputs:
     with inputs; let
       # supportedSystems = ["x86_64-linux" "x86-linux"];
       defaultSystem = "x86_64-linux";
       specialArgs = {inherit self inputs;};
-      nixos-lib = import (nixpkgs + "/nixos/lib") { };
+      nixos-lib = import (nixpkgs + "/nixos/lib") {};
       pkgs = import nixpkgs {
         system = defaultSystem;
       };
@@ -38,14 +42,15 @@
       nixosConfigurations = {
         nextcloud =
           mkNixos defaultSystem [
-            # nixos-generators.nixosModules.linode
-            ./hosts/nextcloud/hardware.nix
+            nixos-generators.nixosModules.linode
+            authentik-nix.nixosModules.default
           ]
           self.nixosModules.nextcloud;
       };
       nixosModules = {
-        nextcloud = ./hosts/authentik
+        authentik = ./hosts/authentik;
       };
+      formatter.x86_64-linux = pkgs.alejandra;
       checks.${defaultSystem}.default = nixos-lib.runTest (import ./tests/main.nix {inherit self inputs pkgs;});
       packages.x86_64-linux = {
         linode = nixos-generators.nixosGenerate {
@@ -54,6 +59,7 @@
             # you can include your own nixos configuration here, i.e.
             agenix.nixosModules.default
             self.nixosModules.authentik
+            authentik-nix.nixosModules.default
           ];
           format = "linode";
         };

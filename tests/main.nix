@@ -6,26 +6,27 @@
 }: {
   name = "nextcloud";
   hostPkgs = pkgs;
-  imports = [{
-  nodes.machine = {
-    lib,
-    pkgs,
-    config,
-    ...
-  }: {
-    imports = [
-      inputs.agenix.nixosModules.default
-      self.nixosModules.nextcloud
-      inputs.nixos-generators.nixosModules.linode
-      {
-        services.tailscale.enable = lib.mkForce false;
-        services.nextcloud.config = {
-          adminpassFile = lib.mkForce "${pkgs.writeText "aaa" "aaa"}";
-        };
-      }
-    ];
-  };
-}
+  imports = [
+    {
+      nodes.machine = {
+        lib,
+        pkgs,
+        config,
+        ...
+      }: {
+        imports = [
+          inputs.agenix.nixosModules.default
+          self.nixosModules.nextcloud
+          inputs.nixos-generators.nixosModules.linode
+          {
+            services.tailscale.enable = lib.mkForce false;
+            services.nextcloud.config = {
+              adminpassFile = lib.mkForce "${pkgs.writeText "aaa" "aaa"}";
+            };
+          }
+        ];
+      };
+    }
   ];
   testScript = {nodes, ...}: ''
     start_all()

@@ -3,8 +3,7 @@
   pkgs,
   lib,
   ...
-}:
-let
+}: let
   defaultGroups = ["wheel" "docker"];
 in {
   time.timeZone = "America/New_York";
@@ -16,10 +15,9 @@ in {
   environment.systemPackages = with pkgs; [
     git
     docker-compose
-    micro
   ];
   programs.bash.shellAliases = {
-    rbsw = "sudo nixos-rebuild switch --flake github:JeremiahSecrist/linode-nextcloud-nixos";
+    rbsw = "sudo nixos-rebuild switch --flake";
   };
 
   # age.secrets.secret1 = {
@@ -32,16 +30,19 @@ in {
     sshAgentAuth.enable = true;
     services.sudo.sshAgentAuth = true;
   };
-  services.openssh = {
-    enable = true;
-    openFirewall = true;
-    settings = {
-      PasswordAuthentication = false;
-      PermitRootLogin = "no";
-      KbdInteractiveAuthentication = false;
+  services = {
+    tailscale.enable = true;
+    openssh = {
+      enable = true;
+      openFirewall = true;
+      settings = {
+        PasswordAuthentication = false;
+        PermitRootLogin = "no";
+        KbdInteractiveAuthentication = false;
+      };
+      startWhenNeeded = true;
+      # kexAlgorithms = [ "curve25519-sha256@libssh.org" ];
     };
-    startWhenNeeded = true;
-    # kexAlgorithms = [ "curve25519-sha256@libssh.org" ];
   };
   users.users = {
     sky = {
@@ -51,22 +52,14 @@ in {
       ];
       extraGroups = defaultGroups;
     };
-    cye = {
-      isNormalUser = true;
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICeRKXdKXgdgn7AGR/wx0+0M0G4WWHIjHdPPIRYLuroS"
-      ];
-      extraGroups = defaultGroups;
-    };
   };
-  services.tailscale.enable = true;
   virtualisation = {
     docker = {
       enable = true;
       liveRestore = true;
     };
   };
-  networking.firewall.allowedTCPPorts = [22 80 443 3000];
+  networking.firewall.allowedTCPPorts = [443];
   system.stateVersion = "23.11";
   system.autoUpgrade = {
     dates = "daily";
@@ -75,5 +68,5 @@ in {
     randomizedDelaySec = "60min";
     flake = "github:JeremiahSecrist/linode-nextcloud-nixos";
   };
-  networking.hostName = "nextcloud";
+  networking.hostName = "authentik";
 }
