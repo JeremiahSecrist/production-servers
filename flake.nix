@@ -47,7 +47,6 @@
       nixosConfigurations = {
         nextcloud =
           mkNixos defaultSystem [
-            nixos-generators.nixosModules.linode
             authentik-nix.nixosModules.default
             self.nixosModules.disko-bcachefs
           ]
@@ -55,7 +54,7 @@
       };
       nixosModules = {
         authentik = ./hosts/authentik;
-        disko-bcachefs = ./profiles/disko;
+        disko-bcachefs = ./profiles/disko/bcachefs;
       };
       formatter.x86_64-linux = pkgs.alejandra;
       checks.${defaultSystem}.default = nixos-lib.runTest (import ./tests/main.nix {inherit self inputs pkgs;});
