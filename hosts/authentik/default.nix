@@ -7,7 +7,12 @@
   defaultGroups = ["wheel" "docker"];
 in {
   time.timeZone = "America/New_York";
-  # security.acme.acceptTerms = true;
+  boot.loader.grub = {
+    # no need to set devices, disko will add all devices that have a EF02 partition to the list already
+    # devices = [ ];
+    efiSupport = true;
+    efiInstallAsRemovable = true;
+  };
   nix = {
     package = pkgs.nix;
     settings.experimental-features = ["nix-command" "flakes"];
