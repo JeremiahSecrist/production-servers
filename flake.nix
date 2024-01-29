@@ -5,6 +5,10 @@
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    disko = {
+      url = "github:nix-community/disko/refs/tags/v1.3.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -27,6 +31,7 @@
       # forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       sharedModules = [
         agenix.nixosModules.default
+        disko.nixosModules.disko
       ];
       mkNixos = system: systemModules: config:
         nixpkgs.lib.nixosSystem {
@@ -45,25 +50,15 @@
             nixos-generators.nixosModules.linode
             authentik-nix.nixosModules.default
           ]
-          self.nixosModules.nextcloud;
+          self.nixosModules.authentik;
       };
       nixosModules = {
         authentik = ./hosts/authentik;
+        bcachefs = ./profiles/disko;
       };
       formatter.x86_64-linux = pkgs.alejandra;
       checks.${defaultSystem}.default = nixos-lib.runTest (import ./tests/main.nix {inherit self inputs pkgs;});
-      packages.x86_64-linux = {
-        linode = nixos-generators.nixosGenerate {
-          system = defaultSystem;
-          modules = [
-            # you can include your own nixos configuration here, i.e.
-            agenix.nixosModules.default
-            self.nixosModules.authentik
-            authentik-nix.nixosModules.default
-          ];
-          format = "linode";
-        };
-      };
+      # packages.x86_64-linux = {};
       apps.x86_64-linux.agenix = {
         type = "app";
         program = "${agenix.packages.x86_64-linux.agenix}/bin/agenix -i ./secrets/identities/sky $@";
