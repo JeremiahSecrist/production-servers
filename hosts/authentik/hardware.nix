@@ -17,6 +17,7 @@
     };
     growPartition = true;
     loader = {
+      grub.devices = ["/dev/sda"];
       boot = {
         tmp.cleanOnBoot = true;
       };
