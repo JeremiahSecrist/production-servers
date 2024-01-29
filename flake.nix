@@ -49,12 +49,13 @@
           mkNixos defaultSystem [
             nixos-generators.nixosModules.linode
             authentik-nix.nixosModules.default
+            self.nixosModules.disko-bcachefs
           ]
           self.nixosModules.authentik;
       };
       nixosModules = {
         authentik = ./hosts/authentik;
-        bcachefs = ./profiles/disko;
+        disko-bcachefs = ./profiles/disko;
       };
       formatter.x86_64-linux = pkgs.alejandra;
       checks.${defaultSystem}.default = nixos-lib.runTest (import ./tests/main.nix {inherit self inputs pkgs;});
