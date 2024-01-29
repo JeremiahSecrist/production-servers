@@ -6,13 +6,10 @@
 }: let
   defaultGroups = ["wheel" "docker"];
 in {
+  imports = [
+    ./hardware.nix
+  ];
   time.timeZone = "America/New_York";
-  boot.loader.grub = {
-    # no need to set devices, disko will add all devices that have a EF02 partition to the list already
-    # devices = [ ];
-    efiSupport = true;
-    efiInstallAsRemovable = true;
-  };
   nix = {
     package = pkgs.nix;
     settings.experimental-features = ["nix-command" "flakes"];
@@ -58,20 +55,20 @@ in {
       extraGroups = defaultGroups;
     };
   };
-  virtualisation = {
-    docker = {
-      enable = true;
-      liveRestore = true;
-    };
-  };
+  # virtualisation = {
+  #   docker = {
+  #     enable = true;
+  #     liveRestore = true;
+  #   };
+  # };
   networking.firewall.allowedTCPPorts = [443];
   system.stateVersion = "23.11";
-  system.autoUpgrade = {
-    dates = "daily";
-    enable = true;
-    allowReboot = false;
-    randomizedDelaySec = "60min";
-    flake = "github:JeremiahSecrist/linode-nextcloud-nixos";
-  };
+  # system.autoUpgrade = {
+  #   dates = "daily";
+  #   enable = true;
+  #   allowReboot = false;
+  #   randomizedDelaySec = "60min";
+  #   flake = "github:JeremiahSecrist/linode-nextcloud-nixos";
+  # };
   networking.hostName = "authentik";
 }
