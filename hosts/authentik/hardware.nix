@@ -15,12 +15,10 @@
       availableKernelModules = ["ata_piix" "uhci_hcd" "xen_blkfront" "vmw_pvscsi"];
       kernelModules = ["nvme"];
     };
+    tmp.cleanOnBoot = true;
     growPartition = true;
     loader = {
-      grub.devices = ["/dev/sda"];
-      boot = {
-        tmp.cleanOnBoot = true;
-      };
+      # grub.devices = ["/dev/vda"];
       grub = {
         enable = true;
         splashImage = null;
