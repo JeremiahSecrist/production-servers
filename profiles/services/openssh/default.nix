@@ -12,11 +12,14 @@
       PermitRootLogin = "no";
       KbdInteractiveAuthentication = false;
     };
-    startWhenNeeded = true;
+    # startWhenNeeded = true;
     # kexAlgorithms = [ "curve25519-sha256@libssh.org" ];
   };
-  security.pam = {
-    enableSSHAgentAuth = true;
-    services.sudo.sshAgentAuth = true;
+  security = {
+    sudo.execWheelOnly = true;
+    pam = {
+      enableSSHAgentAuth = true;
+      services.sudo.sshAgentAuth = true;
+    };
   };
 }
