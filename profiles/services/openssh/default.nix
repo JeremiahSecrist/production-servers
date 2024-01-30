@@ -12,6 +12,10 @@
       PermitRootLogin = "no";
       KbdInteractiveAuthentication = false;
     };
+    extraConfig = ''
+      # for gpg tunnel
+      StreamLocalBindUnlink yes
+    '';
     # startWhenNeeded = true;
     # kexAlgorithms = [ "curve25519-sha256@libssh.org" ];
   };
