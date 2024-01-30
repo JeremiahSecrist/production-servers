@@ -58,6 +58,7 @@
             self.nixosModules.disko-bcachefs
             self.nixosModules.hardware-nerdrack
             self.nixosModules.services-mailserver
+            self.nixosModules.users-sky
           ]
           self.nixosModules.hosts-authentik;
       };
@@ -67,6 +68,8 @@
         hardware-nerdrack = ./profiles/hardware/nerdrack;
         services-authentik = ./profiles/services/authentik;
         services-mailserver = ./profiles/services/mailserver;
+        services-openssh = ./profiles/services/openssh;
+        users-sky = ./users/sky;
       };
       formatter.x86_64-linux = pkgs.alejandra;
       checks.${defaultSystem}.default = nixos-lib.runTest (import ./tests/main.nix {inherit self inputs pkgs;});
