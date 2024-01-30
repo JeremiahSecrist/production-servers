@@ -58,6 +58,7 @@
             self.nixosModules.disko-bcachefs
             self.nixosModules.hardware-nerdrack
             self.nixosModules.services-mailserver
+            self.nixosModules.services-openssh
             self.nixosModules.users-sky
           ]
           self.nixosModules.hosts-authentik;
