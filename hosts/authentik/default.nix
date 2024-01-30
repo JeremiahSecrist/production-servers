@@ -6,9 +6,6 @@
 }: let
   defaultGroups = ["wheel" "docker"];
 in {
-  imports = [
-    ./hardware.nix
-  ];
   time.timeZone = "America/New_York";
   nix = {
     package = pkgs.nix;
@@ -29,7 +26,7 @@ in {
   #   owner = "nextcloud";
   # };
   security.pam = {
-    sshAgentAuth.enable = true;
+    enableSSHAgentAuth = true;
     services.sudo.sshAgentAuth = true;
   };
   services = {
@@ -46,15 +43,7 @@ in {
       # kexAlgorithms = [ "curve25519-sha256@libssh.org" ];
     };
   };
-  users.users = {
-    sky = {
-      isNormalUser = true;
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJAGm66rJsr8vjRCYDkH4lEPncPq27o6BHzpmRmkzOiM"
-      ];
-      extraGroups = defaultGroups;
-    };
-  };
+
   # virtualisation = {
   #   docker = {
   #     enable = true;

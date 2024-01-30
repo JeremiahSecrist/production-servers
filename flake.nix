@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -16,6 +16,12 @@
     authentik-nix = {
       url = "github:nix-community/authentik-nix";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    simple-nixos-mailserver = {
+      url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-23.11";
+    };
+    nixos-anywhere = {
+      url = "github:nix-community/nixos-anywhere/refs/tags/1.1.1";
     };
   };
   outputs = inputs:
@@ -45,23 +51,35 @@
         };
     in {
       nixosConfigurations = {
-        nextcloud =
+        authentik =
           mkNixos defaultSystem [
             authentik-nix.nixosModules.default
+            simple-nixos-mailserver.nixosModules.default
             self.nixosModules.disko-bcachefs
+            self.nixosModules.hardware-nerdrack
+            self.nixosModules.services-mailserver
           ]
-          self.nixosModules.authentik;
+          self.nixosModules.hosts-authentik;
       };
       nixosModules = {
-        authentik = ./hosts/authentik;
+        hosts-authentik = ./hosts/authentik;
         disko-bcachefs = ./profiles/disko/bcachefs;
+        hardware-nerdrack = ./profiles/hardware/nerdrack;
+        services-authentik = ./profiles/services/authentik;
+        services-mailserver = ./profiles/services/mailserver;
       };
       formatter.x86_64-linux = pkgs.alejandra;
       checks.${defaultSystem}.default = nixos-lib.runTest (import ./tests/main.nix {inherit self inputs pkgs;});
       # packages.x86_64-linux = {};
-      apps.x86_64-linux.agenix = {
-        type = "app";
-        program = "${agenix.packages.x86_64-linux.agenix}/bin/agenix -i ./secrets/identities/sky $@";
+      apps.x86_64-linux = {
+        agenix = {
+          type = "app";
+          program = "${agenix.packages.x86_64-linux.agenix}/bin/agenix -i ./secrets/identities/sky $@";
+        };
+        install = {
+          type = "app";
+          program = "${nixos-anywhere.packages.x86_64-linux.nixos-anywhere}/bin/nixos-anywhere";
+        };
       };
     };
 }
