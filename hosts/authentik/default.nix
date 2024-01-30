@@ -25,10 +25,7 @@ in {
   #   mode = "770";
   #   owner = "nextcloud";
   # };
-  security.pam = {
-    enableSSHAgentAuth = true;
-    services.sudo.sshAgentAuth = true;
-  };
+
   services = {
     tailscale.enable = true;
   };

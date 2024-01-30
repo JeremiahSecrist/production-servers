@@ -15,4 +15,8 @@
     startWhenNeeded = true;
     # kexAlgorithms = [ "curve25519-sha256@libssh.org" ];
   };
+  security.pam = {
+    enableSSHAgentAuth = true;
+    services.sudo.sshAgentAuth = true;
+  };
 }
