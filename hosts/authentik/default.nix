@@ -31,17 +31,6 @@ in {
   };
   services = {
     tailscale.enable = true;
-    openssh = {
-      enable = true;
-      openFirewall = true;
-      settings = {
-        PasswordAuthentication = false;
-        PermitRootLogin = "no";
-        KbdInteractiveAuthentication = false;
-      };
-      startWhenNeeded = true;
-      # kexAlgorithms = [ "curve25519-sha256@libssh.org" ];
-    };
   };
 
   # virtualisation = {
