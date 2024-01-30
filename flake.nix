@@ -69,7 +69,7 @@
             simple-nixos-mailserver.nixosModules.default
             self.nixosModules.disko-bcachefs
             self.nixosModules.hardware-nerdrack
-            self.nixosModules.services-mailserver
+            # self.nixosModules.services-mailserver
             self.nixosModules.services-openssh
             self.nixosModules.users-sky
           ]
