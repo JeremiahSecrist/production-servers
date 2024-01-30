@@ -23,6 +23,7 @@
     nixos-anywhere = {
       url = "github:nix-community/nixos-anywhere/refs/tags/1.1.1";
     };
+    deploy-rs.url = "github:serokell/deploy-rs";
   };
   outputs = inputs:
     with inputs; let
@@ -38,6 +39,7 @@
       sharedModules = [
         agenix.nixosModules.default
         disko.nixosModules.disko
+        # deploy-rs.nixosModules.default
       ];
       mkNixos = system: systemModules: config:
         nixpkgs.lib.nixosSystem {
@@ -50,6 +52,16 @@
             ];
         };
     in {
+      nixosModules = {
+        hosts-authentik = ./hosts/authentik;
+        disko-bcachefs = ./profiles/disko/bcachefs;
+        hardware-nerdrack = ./profiles/hardware/nerdrack;
+        services-authentik = ./profiles/services/authentik;
+        services-mailserver = ./profiles/services/mailserver;
+        services-openssh = ./profiles/services/openssh;
+        users-sky = ./profiles/users/sky;
+      };
+
       nixosConfigurations = {
         authentik =
           mkNixos defaultSystem [
@@ -63,14 +75,27 @@
           ]
           self.nixosModules.hosts-authentik;
       };
-      nixosModules = {
-        hosts-authentik = ./hosts/authentik;
-        disko-bcachefs = ./profiles/disko/bcachefs;
-        hardware-nerdrack = ./profiles/hardware/nerdrack;
-        services-authentik = ./profiles/services/authentik;
-        services-mailserver = ./profiles/services/mailserver;
-        services-openssh = ./profiles/services/openssh;
-        users-sky = ./users/sky;
+
+      # colmena = {
+      #   meta = {
+      #     nixpkgs = pkgs;
+      #     deployment = {
+      #       buildOnTarget = true;
+      #       targetUser = "sky";
+      #     };
+      #   };
+      # };
+
+      deploy.nodes.authentik = {
+        hostname = "107.172.92.84";
+        profiles.system = {
+          user = "root";
+          sshUser = "sky";
+          sshOpts = [ "-A" ];
+          magicRollback = false;
+          remoteBuild = true;
+          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.authentik;
+        };
       };
       formatter.x86_64-linux = pkgs.alejandra;
       checks.${defaultSystem}.default = nixos-lib.runTest (import ./tests/main.nix {inherit self inputs pkgs;});
@@ -83,6 +108,10 @@
         install = {
           type = "app";
           program = "${nixos-anywhere.packages.x86_64-linux.nixos-anywhere}/bin/nixos-anywhere";
+        };
+        deploy = {
+          type = "app";
+          program = "${deploy-rs.packages.x86_64-linux.deploy-rs}/bin/deploy";
         };
       };
     };
