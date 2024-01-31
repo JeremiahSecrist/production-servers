@@ -16,7 +16,7 @@ in {
     docker-compose
   ];
   programs.bash.shellAliases = {
-    rbsw = "sudo nixos-rebuild switch --flake git+https://github.com/JeremiahSecrist/production-servers --fast";
+    rbsw="pushd ~/production-servers ;git pull ;sudo nixos-rebuild switch --flake ~/production-servers ; popd";
   };
 
   # age.secrets.secret1 = {
