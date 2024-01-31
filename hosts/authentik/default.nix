@@ -22,14 +22,14 @@ in {
     # Where on the remote the configuration (system flake) is placed
     config-dir = "/var/src/lollypops";
     # SSH connection parameters
-    ssh.host = "107.172.92.84";
-    ssh.user = "sky";
-    ssh.command = "ssh";
-    ssh.opts = ["-A"];
-
+    ssh = {
+      host = "107.172.92.84";
+      user = "sky";
+      command = "ssh";
+      opts = ["-A"];
+    };
     # sudo options
     sudo.enable = true;
-    sudo.command = "sudo";
     # sudo.opts = [];
   };
   # age.secrets.secret1 = {
