@@ -70,7 +70,7 @@
             simple-nixos-mailserver.nixosModules.default
             self.nixosModules.disko-bcachefs
             self.nixosModules.hardware-nerdrack
-            # self.nixosModules.services-mailserver
+            self.nixosModules.services-mailserver
             self.nixosModules.services-openssh
             self.nixosModules.users-sky
           ]
@@ -84,7 +84,7 @@
         default = lollypops.apps."x86_64-linux".default {configFlake = self;};
         agenix = {
           type = "app";
-          program = "${agenix.packages.x86_64-linux.agenix}/bin/agenix -i ./secrets/identities/sky $@";
+          program = "${agenix.packages.x86_64-linux.agenix}/bin/agenix";
         };
         install = {
           type = "app";

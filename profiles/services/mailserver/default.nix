@@ -1,15 +1,21 @@
-{lib, ...}: {
+{lib, config, ...}: {
+  age.secrets.mailserver = {
+    file = ../../../secrets/mailserver;
+    # path = "/var/lib/secrets/nextcloudpass";
+    mode = "700";
+    owner = "mailserver";
+  };
   mailserver = {
     enable = true;
-    fqdn = "mail.example.com";
-    domains = ["example.com"];
+    fqdn = "mail.arouzing.win";
+    domains = ["arouzing.win"];
 
     # A list of all login accounts. To create the password hashes, use
     # nix-shell -p mkpasswd --run 'mkpasswd -sm bcrypt'
     loginAccounts = {
-      "user1@example.com" = {
-        hashedPasswordFile = "/a/file/containing/a/hashed/password";
-        aliases = ["postmaster@example.com"];
+      "admin@arouzing.win" = {
+        hashedPasswordFile = config.age.secrets.mailserver.path;
+        # aliases = ["admin@arouzing.win"];
       };
       # "user2@example.com" = { ... };
     };
@@ -19,5 +25,5 @@
     certificateScheme = "acme-nginx";
   };
   security.acme.acceptTerms = true;
-  security.acme.defaults.email = "security@example.com";
+  security.acme.defaults.email = "owner@arouzing.win";
 }
