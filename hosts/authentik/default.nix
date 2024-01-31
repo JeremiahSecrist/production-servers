@@ -38,12 +38,12 @@ in {
   # };
   networking.firewall.allowedTCPPorts = [443];
   system.stateVersion = "23.11";
-  # system.autoUpgrade = {
-  #   dates = "daily";
-  #   enable = true;
-  #   allowReboot = false;
-  #   randomizedDelaySec = "60min";
-  #   flake = "github:JeremiahSecrist/linode-nextcloud-nixos";
-  # };
+  system.autoUpgrade = {
+    dates = "daily";
+    enable = true;
+    allowReboot = false;
+    randomizedDelaySec = "60min";
+    flake = "git+https://github.com/JeremiahSecrist/production-servers";
+  };
   networking.hostName = "authentik";
 }

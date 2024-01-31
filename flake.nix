@@ -23,7 +23,6 @@
     nixos-anywhere = {
       url = "github:nix-community/nixos-anywhere/refs/tags/1.1.1";
     };
-    deploy-rs.url = "github:serokell/deploy-rs";
   };
   outputs = inputs:
     with inputs; let
@@ -76,27 +75,7 @@
           self.nixosModules.hosts-authentik;
       };
 
-      # colmena = {
-      #   meta = {
-      #     nixpkgs = pkgs;
-      #     deployment = {
-      #       buildOnTarget = true;
-      #       targetUser = "sky";
-      #     };
-      #   };
-      # };
 
-      deploy.nodes.authentik = {
-        hostname = "107.172.92.84";
-        profiles.system = {
-          user = "root";
-          sshUser = "sky";
-          sshOpts = [ "-A" ];
-          magicRollback = false;
-          remoteBuild = true;
-          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.authentik;
-        };
-      };
       formatter.x86_64-linux = pkgs.alejandra;
       checks.${defaultSystem}.default = nixos-lib.runTest (import ./tests/main.nix {inherit self inputs pkgs;});
       # packages.x86_64-linux = {};
