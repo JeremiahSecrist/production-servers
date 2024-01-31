@@ -19,6 +19,7 @@
     # startWhenNeeded = true;
     # kexAlgorithms = [ "curve25519-sha256@libssh.org" ];
   };
+  nix.settings.trusted-users = ["@wheel"];
   security = {
     sudo.execWheelOnly = true;
     pam = {

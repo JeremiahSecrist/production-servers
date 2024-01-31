@@ -23,7 +23,7 @@
     nixos-anywhere = {
       url = "github:nix-community/nixos-anywhere/refs/tags/1.1.1";
     };
-    lollypops.url = "github:pinpox/lollypops";
+    lollypops.url = "github:JeremiahSecrist/lollypops";
   };
   outputs = inputs:
     with inputs; let
@@ -77,12 +77,11 @@
           self.nixosModules.hosts-authentik;
       };
 
-
       formatter.x86_64-linux = pkgs.alejandra;
       checks.${defaultSystem}.default = nixos-lib.runTest (import ./tests/main.nix {inherit self inputs pkgs;});
       # packages.x86_64-linux = {};
       apps.x86_64-linux = {
-        default = lollypops.apps."x86_64-linux".default { configFlake = self; };
+        default = lollypops.apps."x86_64-linux".default {configFlake = self;};
         agenix = {
           type = "app";
           program = "${agenix.packages.x86_64-linux.agenix}/bin/agenix -i ./secrets/identities/sky $@";
