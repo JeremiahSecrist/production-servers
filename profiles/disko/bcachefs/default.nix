@@ -37,16 +37,16 @@
                   };
                   # Subvolume name is the same as the mountpoint
                   "/home" = {
-                    mountOptions = ["compress=zstd"];
+                    mountOptions = ["compress-force=zstd"];
                     mountpoint = "/home";
                   };
                   "/var" = {
-                    mountOptions = ["compress=zstd"];
+                    mountOptions = ["compress-force=zstd"];
                     mountpoint = "/var";
                   };
                   # Parent is not mounted so the mountpoint must be set
                   "/nix" = {
-                    mountOptions = ["compress=zstd" "noatime"];
+                    mountOptions = ["compress-force=zstd" "noatime" "noxattr" "noacl"];
                     mountpoint = "/nix";
                   };
                   # Subvolume for the swapfile
@@ -55,13 +55,6 @@
                     swap = {
                       swapfile.size = "8G";
                     };
-                  };
-                };
-
-                mountpoint = "/partition-root";
-                swap = {
-                  swapfile = {
-                    size = "8G";
                   };
                 };
               };
