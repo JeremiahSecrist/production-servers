@@ -282,15 +282,15 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1704671414,
-        "narHash": "sha256-jMI6l9lORlGjVzYh+JcNHKLagxgdR0cvzRx0NcbS/so=",
-        "owner": "pinpox",
+        "lastModified": 1706684856,
+        "narHash": "sha256-1+7HQJFx+iMeHfCe30OaZTkFUg1UBOJbCFLF3SL5AVg=",
+        "owner": "JeremiahSecrist",
         "repo": "lollypops",
-        "rev": "0bd24e7c345134e87197d9be43436552a7e23be7",
+        "rev": "1305e53da6624b85f959bf8617a15f3868678eae",
         "type": "github"
       },
       "original": {
-        "owner": "pinpox",
+        "owner": "JeremiahSecrist",
         "repo": "lollypops",
         "type": "github"
       }
