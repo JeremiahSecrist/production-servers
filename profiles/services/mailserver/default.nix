@@ -2,8 +2,9 @@
   age.secrets.mailserver = {
     file = ../../../secrets/mailserver;
     # path = "/var/lib/secrets/nextcloudpass";
-    mode = "700";
-    owner = "mailserver";
+    mode = "770";
+    owner = "dovecot2";
+    group = "dovecot2";
   };
   mailserver = {
     enable = true;
