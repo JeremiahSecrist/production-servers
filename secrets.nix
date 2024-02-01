@@ -7,8 +7,11 @@ let
     sky = "age1yubikey1qd07mh0sznx06zvy3qrzfyajeaveerdg4awzp4t4s5dvc7285n4a23hk6j2"; # the public key
   };
 in {
-
-  "${pth}/mailserver".publicKeys = [
+  "${pth}/mailserverusers/admin".publicKeys = [
+    users.sky
+    machines.mailserver
+  ];
+  "${pth}/mailserverusers/zoid".publicKeys = [
     users.sky
     machines.mailserver
   ];
