@@ -6,7 +6,7 @@
 }: let
   defaultGroups = ["wheel" "docker"];
 in {
-  time.timeZone = "America/New_York";
+  time.timeZone = lib.mkForce "America/New_York";
   nix = {
     package = pkgs.nix;
     settings.experimental-features = ["nix-command" "flakes"];

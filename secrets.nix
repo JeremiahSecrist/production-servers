@@ -11,7 +11,15 @@ in {
     users.sky
     machines.mailserver
   ];
+  "${pth}/mailserverusers/authentik".publicKeys = [
+    users.sky
+    machines.mailserver
+  ];
   "${pth}/mailserverusers/zoid".publicKeys = [
+    users.sky
+    machines.mailserver
+  ];
+  "${pth}/authentikenv".publicKeys = [
     users.sky
     machines.mailserver
   ];
