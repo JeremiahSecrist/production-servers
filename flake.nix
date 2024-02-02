@@ -55,7 +55,7 @@
     in {
       nixosModules = {
         hosts-authentik = ./hosts/authentik;
-        disko-bcachefs = ./profiles/disko/bcachefs;
+        disko-btrfs = ./profiles/disko/btrfs;
         hardware-nerdrack = ./profiles/hardware/nerdrack;
         services-authentik = ./profiles/services/authentik;
         services-mailserver = ./profiles/services/mailserver;
@@ -68,7 +68,7 @@
           mkNixos defaultSystem [
             authentik-nix.nixosModules.default
             simple-nixos-mailserver.nixosModules.default
-            self.nixosModules.disko-bcachefs
+            self.nixosModules.disko-btrfs
             self.nixosModules.hardware-nerdrack
             self.nixosModules.services-authentik
             self.nixosModules.services-mailserver
