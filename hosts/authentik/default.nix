@@ -13,7 +13,6 @@ in {
   };
   environment.systemPackages = with pkgs; [
     git
-    docker-compose
   ];
   programs.bash.shellAliases = {
     rbsw = "pushd ~/production-servers ;git pull ;sudo nixos-rebuild switch --flake ~/production-servers ; popd";
@@ -38,17 +37,25 @@ in {
   #   mode = "770";
   #   owner = "nextcloud";
   # };
-
+  environment.etc."nextcloud-admin-pass".text = "test123";
+  services.nginx.virtualHosts.${config.services.nextcloud.hostName} = {
+    forceSSL = true;
+    enableACME = true;
+  };
   services = {
     tailscale.enable = true;
+    nextcloud = {
+      enable = true;
+      package = pkgs.nextcloud28;
+      hostName = "nc.arouzing.win";
+      https = true;
+      database.createLocally = true;
+      config = {
+        dbtype = "pgsql";
+        adminpassFile = "/etc/nextcloud-admin-pass";
+      };
+    };
   };
-
-  # virtualisation = {
-  #   docker = {
-  #     enable = true;
-  #     liveRestore = true;
-  #   };
-  # };
   networking.firewall.allowedTCPPorts = [443];
   system.stateVersion = "23.11";
   system.autoUpgrade = {
