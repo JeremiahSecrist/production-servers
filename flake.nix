@@ -9,6 +9,7 @@
       url = "github:nix-community/disko/refs/tags/v1.3.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    deploy-rs.url = "github:serokell/deploy-rs";
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -23,7 +24,6 @@
     nixos-anywhere = {
       url = "github:nix-community/nixos-anywhere/refs/tags/1.1.1";
     };
-    lollypops.url = "github:JeremiahSecrist/lollypops";
   };
   outputs = inputs:
     with inputs; let
@@ -39,7 +39,6 @@
       sharedModules = [
         agenix.nixosModules.default
         disko.nixosModules.disko
-        lollypops.nixosModules.lollypops
         # deploy-rs.nixosModules.default
       ];
       mkNixos = system: systemModules: config:
@@ -77,7 +76,19 @@
           ]
           self.nixosModules.hosts-authentik;
       };
-
+      
+      deploy.nodes.authentik = {
+        hostname = "arouzing.win";
+        profiles = {
+        system = {
+          user = "root";
+          sshUser = "sky";
+          sshOpts = [ "-A" ];
+          remoteBuild = true;
+          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.authentik;
+        };
+      };
+      };
       formatter.x86_64-linux = pkgs.alejandra;
       checks.${defaultSystem}.default = nixos-lib.runTest (import ./tests/main.nix {inherit self inputs pkgs;});
       # packages.x86_64-linux = {};
