@@ -14,9 +14,6 @@ in {
   environment.systemPackages = with pkgs; [
     git
   ];
-  programs.bash.shellAliases = {
-    rbsw = "pushd ~/production-servers ;git pull ;sudo nixos-rebuild switch --flake ~/production-servers ; popd";
-  };
   # age.secrets.secret1 = {
   #   file = ../../secrets/nextcloudPassword;
   #   # path = "/var/lib/secrets/nextcloudpass";
