@@ -19,8 +19,7 @@ in
       default = null;
     };
   };
-  config = lib.mkMerge [
-    (lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
         users = {
           groups.builder = { };
           users.builder = {
@@ -33,15 +32,6 @@ in
             group = "builder";
           };
         };
-        # services.openssh.extraConfig = ''
-        #   Match User builder
-        #     AllowAgentForwarding no
-        #     AllowTcpForwarding no
-        #     PermitTTY no
-        #     PermitTunnel no
-        #     X11Forwarding no
-        #   Match All
-        # '';
 
         nix = {
           settings = {
@@ -61,6 +51,5 @@ in
             keys = cfg.userKeys;
           };
         };
-    })
-  ];
+    };
 }
