@@ -12,7 +12,7 @@
     deploy-rs.url = "github:serokell/deploy-rs";
     agenix = {
       url = "github:ryantm/agenix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
     authentik-nix = {
       url = "github:nix-community/authentik-nix";
@@ -56,6 +56,7 @@
         hosts-authentik = ./hosts/authentik;
         disko-btrfs = ./profiles/disko/btrfs;
         hardware-nerdrack = ./profiles/hardware/nerdrack;
+        services-remoteBuilder = ./profiles/services/remoteBuilder;
         services-authentik = ./profiles/services/authentik;
         services-mailserver = ./profiles/services/mailserver;
         services-openssh = ./profiles/services/openssh;
@@ -72,6 +73,7 @@
             self.nixosModules.services-authentik
             self.nixosModules.services-mailserver
             self.nixosModules.services-openssh
+            self.nixosModules.services-remoteBuilder
             self.nixosModules.users-sky
           ]
           self.nixosModules.hosts-authentik;
@@ -92,11 +94,11 @@
       formatter.x86_64-linux = pkgs.alejandra;
       checks.${defaultSystem}.default = nixos-lib.runTest (import ./tests/main.nix {inherit self inputs pkgs;});
       # packages.x86_64-linux = {};
-      apps.x86_64-linux = {
-        default = lollypops.apps."x86_64-linux".default {configFlake = self;};
-        agenix = {
+      apps.x86_64-linux = rec {
+        default = deploy;
+        secrets = {
           type = "app";
-          program = "${agenix.packages.x86_64-linux.agenix}/bin/agenix";
+          program = "${agenix.packages.x86_64-linux.default}/bin/agenix";
         };
         install = {
           type = "app";

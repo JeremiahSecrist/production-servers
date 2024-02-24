@@ -14,16 +14,21 @@ in {
   environment.systemPackages = with pkgs; [
     git
   ];
-  # age.secrets.secret1 = {
-  #   file = ../../secrets/nextcloudPassword;
-  #   # path = "/var/lib/secrets/nextcloudpass";
-  #   mode = "770";
-  #   owner = "nextcloud";
-  # };
+  age.secrets.builderSecret = {
+    file = ../../secrets/builderSecret;
+    # path = "/var/lib/secrets/nextcloudpass";
+    # mode = "770";
+    # owner = "nextcloud";
+  };
   environment.etc."nextcloud-admin-pass".text = "test123";
   services.nginx.virtualHosts.${config.services.nextcloud.hostName} = {
     forceSSL = true;
     enableACME = true;
+  };
+  local.remoteBuild = {
+    enable = true;
+    userKeys = config.users.users.sky.openssh.authorizedKeys.keys;
+    privKey = config.age.secrets.builderSecret.path;
   };
   services = {
     tailscale.enable = true;

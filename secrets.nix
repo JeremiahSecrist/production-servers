@@ -23,4 +23,8 @@ in {
     users.sky
     machines.mailserver
   ];
+  "${pth}/builderSecret".publicKeys = [
+    users.sky
+    machines.mailserver
+  ];
 }
