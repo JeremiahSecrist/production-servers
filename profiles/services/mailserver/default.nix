@@ -7,7 +7,7 @@
 in {
   services.roundcube = {
     enable = true;
-    hostName = domain;
+    hostName = "m." + domain;
     extraConfig = ''
       # starttls needed for authentication, so the fqdn required to match
       # the certificate
@@ -35,7 +35,7 @@ in {
     loginAccounts = {
       "admin@arouzing.win".hashedPasswordFile = config.age.secrets.admin.path;
       "authentik@arouzing.win".hashedPasswordFile = config.age.secrets.authentik.path;
-      "hodbogi@arouzing.win".hashedPasswordFile = config.age.secrets.zoid.path;
+      # "hodbogi@arouzing.win".hashedPasswordFile = config.age.secrets.zoid.path;
     };
     certificateScheme = "acme-nginx";
   };

@@ -63,18 +63,18 @@
         users-sky = ./profiles/users/sky;
       };
 
-      nixosConfigurations = {
+      nixosConfigurations = with self.nixosModules;{
         authentik =
           mkNixos defaultSystem [
             authentik-nix.nixosModules.default
-            simple-nixos-mailserver.nixosModules.default
-            self.nixosModules.disko-btrfs
-            self.nixosModules.hardware-nerdrack
-            self.nixosModules.services-authentik
-            self.nixosModules.services-mailserver
-            self.nixosModules.services-openssh
-            self.nixosModules.services-remoteBuilder
-            self.nixosModules.users-sky
+            # services-mailserver
+            # services-authentik
+            # simple-nixos-mailserver.nixosModules.default
+            disko-btrfs
+            hardware-nerdrack
+            services-openssh
+            services-remoteBuilder
+            users-sky
           ]
           self.nixosModules.hosts-authentik;
       };
@@ -86,7 +86,7 @@
           user = "root";
           sshUser = "sky";
           sshOpts = [ "-A" ];
-          remoteBuild = true;
+          # remoteBuild = true;
           path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.authentik;
         };
       };
