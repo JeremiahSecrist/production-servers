@@ -1,8 +1,7 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
+{ pkgs
+, lib
+, config
+, ...
 }: {
   services.openssh = {
     enable = true;
@@ -18,7 +17,7 @@
   security = {
     sudo.execWheelOnly = true;
     pam = {
-      enableSSHAgentAuth = true;
+      sshAgentAuth.enable = true;
       services.sudo.sshAgentAuth = true;
     };
   };

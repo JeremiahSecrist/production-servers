@@ -1,10 +1,11 @@
-{
-  lib,
-  config,
-  ...
-}: let
+{ lib
+, config
+, ...
+}:
+let
   domain = "arouzing.win";
-in {
+in
+{
   services.roundcube = {
     enable = true;
     hostName = "m." + domain;
@@ -28,7 +29,7 @@ in {
   mailserver = {
     enable = true;
     fqdn = "mail.${domain}";
-    domains = [domain];
+    domains = [ domain ];
 
     # A list of all login accounts. To create the password hashes, use
     # nix-shell -p mkpasswd --run 'mkpasswd -sm bcrypt'

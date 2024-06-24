@@ -1,6 +1,7 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -29,8 +30,8 @@
     with inputs; let
       # supportedSystems = ["x86_64-linux" "x86-linux"];
       defaultSystem = "x86_64-linux";
-      specialArgs = {inherit self inputs;};
-      nixos-lib = import (nixpkgs + "/nixos/lib") {};
+      specialArgs = { inherit self inputs; };
+      nixos-lib = import (nixpkgs + "/nixos/lib") { };
       pkgs = import nixpkgs {
         system = defaultSystem;
       };
@@ -51,7 +52,8 @@
               config
             ];
         };
-    in {
+    in
+    {
       nixosModules = {
         hosts-authentik = ./hosts/authentik;
         disko-btrfs = ./profiles/disko/btrfs;
@@ -63,7 +65,7 @@
         users-sky = ./profiles/users/sky;
       };
 
-      nixosConfigurations = with self.nixosModules;{
+      nixosConfigurations = with self.nixosModules; {
         authentik =
           mkNixos defaultSystem [
             authentik-nix.nixosModules.default
@@ -76,23 +78,23 @@
             services-remoteBuilder
             users-sky
           ]
-          self.nixosModules.hosts-authentik;
+            self.nixosModules.hosts-authentik;
       };
-      
+
       deploy.nodes.authentik = {
         hostname = "arouzing.win";
         profiles = {
-        system = {
-          user = "root";
-          sshUser = "sky";
-          sshOpts = [ "-A" ];
-          # remoteBuild = true;
-          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.authentik;
+          system = {
+            user = "root";
+            sshUser = "sky";
+            sshOpts = [ "-A" ];
+            # remoteBuild = true;
+            path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.authentik;
+          };
         };
       };
-      };
       formatter.x86_64-linux = pkgs.alejandra;
-      checks.${defaultSystem}.default = nixos-lib.runTest (import ./tests/main.nix {inherit self inputs pkgs;});
+      checks.${defaultSystem}.default = nixos-lib.runTest (import ./tests/main.nix { inherit self inputs pkgs; });
       # packages.x86_64-linux = {};
       apps.x86_64-linux = rec {
         default = deploy;
