@@ -187,7 +187,7 @@ in
         };
         a = {
           wpgraphql = (getPlugin "wp-graphql" "1.27.0" "sha256-/FUW2vIvGJD/7XpT2BF9Xt9O1XIH/KlV7Z94pe99ziA=");
-          cloudinary = (getPlugin "cloudinary-image-management-and-manipulation-in-the-cloud-cdn" "3.1.8" "sha256-k/uOGHpMgrdfMLXX1joHSRy0c8Qbbv66hVU0Ks642Qs=");
+          cloudinary = (getPlugin "cloudinary-image-management-and-manipulation-in-the-cloud-cdn" "3.1.8" "sha256-NwCyBIe/OSY146rVR3ejd8wbVj+cY/rGdQDJoI/k2+c=");
           woo = (getPlugin "woocommerce" "9.0.1" "sha256-F2Gf94mMJiFUyHkByDjAF5+EXhbSSZ2hEnoVmP9bDcc=");
           acf = (getPlugin "advanced-custom-fields" "6.3.1" "sha256-+zpG7fM4tCSDzuem9B9bfcsnePRFAJ4fVzevk4HT3UY=");
           acfql = pkgs.stdenv.mkDerivation {
